@@ -16,5 +16,56 @@
     "roc_auc": 0.8013645309325552,
     "recall_at_p50": 0.18080210387902695,
     "recall_at_p80": 0.1091387245233399
+  },
+  "logreg_full": {
+    "pr_auc": 0.42840082823453657,
+    "roc_auc": 0.8456507863863214,
+    "recall_at_p50": 0.3708086785009862,
+    "recall_at_p80": 0.23208415516107825,
+    "train_seconds": 239.2,
+    "best_iteration": null
+  },
+  "isolation_forest": {
+    "pr_auc": 0.18274770202070575,
+    "roc_auc": 0.771721745372091,
+    "recall_at_p50": 0.05325443786982249,
+    "recall_at_p80": 0.0,
+    "train_seconds": 19.1,
+    "best_iteration": null
+  },
+  "lgbm_default": {
+    "pr_auc": 0.6227380622262133,
+    "roc_auc": 0.9187321109143544,
+    "recall_at_p50": 0.6301775147928994,
+    "recall_at_p80": 0.462853385930309,
+    "train_seconds": 150.4,
+    "best_iteration": 1475
+  },
+  "lgbm_scale_pos_weight": {
+    "pr_auc": 0.6091278258794485,
+    "roc_auc": 0.9071194741833506,
+    "recall_at_p50": 0.6022353714661407,
+    "recall_at_p80": 0.47567389875082183,
+    "train_seconds": 189.3,
+    "best_iteration": 1990
+  },
+  "lgbm_no_highcard_cats": {
+    "pr_auc": 0.6090742942504919,
+    "roc_auc": 0.9226320779094277,
+    "recall_at_p50": 0.611439842209073,
+    "recall_at_p80": 0.43918474687705455,
+    "train_seconds": 76.8,
+    "best_iteration": 599
+  },
+  "lgbm_tuned": {
+    "pr_auc": 0.6852841265073721,
+    "roc_auc": 0.9293755829290228,
+    "recall_at_p50": 0.710387902695595,
+    "recall_at_p80": 0.5414201183431953,
+    "train_seconds": 289.6,
+    "best_iteration": 1988,
+    "tuned_from": "lgbm_default",
+    "n_trials": 40,
+    "tuning_seconds": 9358.8
   }
 }

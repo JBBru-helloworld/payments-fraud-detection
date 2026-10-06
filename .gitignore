@@ -3,6 +3,7 @@ data/
 models/
 *.parquet
 *.csv
+!reports/*.csv
 
 # Credentials
 .env

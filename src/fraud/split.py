@@ -51,6 +51,23 @@ def split_info(df: pd.DataFrame, masks: dict[str, np.ndarray]) -> dict[str, dict
     return info
 
 
+def read_train_validation(
+    columns: list[str], path: Path = MERGED_PARQUET
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Read columns for the train and validation windows only.
+
+    Rows after the validation cut point are filtered out by the parquet reader,
+    so test rows and their labels are never returned. TransactionDT is always included.
+    """
+    time = pd.read_parquet(path, columns=[TIME_COL])[TIME_COL]
+    lo, hi = cut_points(time)
+    cols = list(dict.fromkeys([TIME_COL, *columns]))
+    df = pd.read_parquet(path, columns=cols, filters=[(TIME_COL, "<=", hi)])
+    assert np.array_equal(df[TIME_COL].to_numpy(), time[time <= hi].to_numpy())
+    is_train = (df[TIME_COL] <= lo).to_numpy()
+    return df.loc[is_train].reset_index(drop=True), df.loc[~is_train].reset_index(drop=True)
+
+
 def load_split_frame(path: Path = MERGED_PARQUET) -> pd.DataFrame:
     """Load only the columns needed to build and describe the split."""
     return pd.read_parquet(path, columns=[ID_COL, TIME_COL, TARGET])
