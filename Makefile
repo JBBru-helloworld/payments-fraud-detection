@@ -2,7 +2,7 @@ PYTHON_VERSION := $(shell cat .python-version)
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup data test
+.PHONY: setup data eda test
 
 setup:
 	python$(PYTHON_VERSION) -m venv $(VENV)
@@ -11,6 +11,9 @@ setup:
 
 data:
 	PYTHONPATH=src $(PY) -m fraud.data
+
+eda:
+	PYTHONPATH=src $(PY) -m fraud.eda
 
 test:
 	$(PY) -m pytest
