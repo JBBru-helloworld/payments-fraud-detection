@@ -1,0 +1,17 @@
+# Data and local artefacts never enter the image.
+data/
+notebooks/
+reports/figures/
+models/optuna_study.db
+
+# Environments, caches and version control
+.git
+.venv/
+**/__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+
+# Credentials
+.env
+kaggle.json

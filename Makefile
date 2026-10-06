@@ -2,7 +2,7 @@ PYTHON_VERSION := $(shell cat .python-version)
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup data eda split baselines features models threshold final-eval explain test
+.PHONY: setup data eda split baselines features models threshold final-eval explain sample-request serve docker-build docker-run test
 
 setup:
 	python$(PYTHON_VERSION) -m venv $(VENV)
@@ -36,6 +36,18 @@ final-eval:
 
 explain:
 	PYTHONPATH=src $(PY) -m fraud.explain
+
+sample-request:
+	PYTHONPATH=src $(PY) -m fraud.payload
+
+serve:
+	PYTHONPATH=src:. $(PY) -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+
+docker-build:
+	docker build -t payments-fraud-api .
+
+docker-run:
+	docker run --rm -p 8000:8000 payments-fraud-api
 
 test:
 	$(PY) -m pytest

@@ -6,6 +6,7 @@ never reach the output, because the fraud rate drifts over time.
 """
 
 import re
+import sys
 from pathlib import Path
 
 import joblib
@@ -249,6 +250,21 @@ class FeatureBuilder:
         return [*ENGINEERED_NUMERIC, *ENGINEERED_CATEGORICAL]
 
 
+def load_feature_builder(path: Path = FEATURE_BUILDER_PATH) -> FeatureBuilder:
+    """Load a fitted FeatureBuilder from any process.
+
+    Builders saved by earlier runs of `python -m fraud.features` were pickled as
+    `__main__.FeatureBuilder`; this alias lets them load outside that process.
+    """
+    main = sys.modules["__main__"]
+    if not hasattr(main, "FeatureBuilder"):
+        setattr(main, "FeatureBuilder", FeatureBuilder)
+    builder = joblib.load(path)
+    if not isinstance(builder, FeatureBuilder) and type(builder).__name__ != "FeatureBuilder":
+        raise TypeError(f"{path} does not contain a FeatureBuilder")
+    return builder
+
+
 def load_unlabelled(path: Path = MERGED_PARQUET) -> pd.DataFrame:
     """Load every column except the label, so no split's labels are read here."""
     columns = [c for c in pq.read_schema(path).names if c != TARGET]
@@ -335,4 +351,7 @@ def run() -> None:
 
 
 if __name__ == "__main__":
-    run()
+    # Import the module by name so the pickled class is fraud.features.FeatureBuilder, not __main__.
+    from fraud.features import run as run_from_module
+
+    run_from_module()
