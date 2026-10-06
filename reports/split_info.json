@@ -1,0 +1,32 @@
+{
+  "fractions": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "cut_points": {
+    "train_max_dt": 10437998.1,
+    "validation_max_dt": 13151845.999999998
+  },
+  "train": {
+    "rows": 413378,
+    "frauds": 14538,
+    "fraud_rate": 0.03516878014795175,
+    "dt_min": 86400,
+    "dt_max": 10437996
+  },
+  "validation": {
+    "rows": 88581,
+    "frauds": 3042,
+    "fraud_rate": 0.03434145019812375,
+    "dt_min": 10438003,
+    "dt_max": 13151840
+  },
+  "test": {
+    "rows": 88581,
+    "frauds": 3083,
+    "fraud_rate": 0.03480430340592226,
+    "dt_min": 13151880,
+    "dt_max": 15811131
+  }
+}

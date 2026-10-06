@@ -2,7 +2,7 @@ PYTHON_VERSION := $(shell cat .python-version)
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup data eda test
+.PHONY: setup data eda split baselines test
 
 setup:
 	python$(PYTHON_VERSION) -m venv $(VENV)
@@ -14,6 +14,12 @@ data:
 
 eda:
 	PYTHONPATH=src $(PY) -m fraud.eda
+
+split:
+	PYTHONPATH=src $(PY) -m fraud.split
+
+baselines: split
+	PYTHONPATH=src $(PY) -m fraud.train
 
 test:
 	$(PY) -m pytest

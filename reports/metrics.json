@@ -1,0 +1,14 @@
+{
+  "baseline_prevalence": {
+    "pr_auc": 0.03434145019812375,
+    "roc_auc": 0.5,
+    "recall_at_p50": 0.0,
+    "recall_at_p80": 0.0
+  },
+  "baseline_logreg": {
+    "pr_auc": 0.24457303074506795,
+    "roc_auc": 0.7494496725751565,
+    "recall_at_p50": 0.15187376725838264,
+    "recall_at_p80": 0.10880999342537805
+  }
+}
