@@ -1,6 +1,6 @@
 # Payments Fraud Detection
 
-This project builds a fraud detection model for card-not-present payments and evaluates it on the latest 15% of the data by time, which no development step looked at. On that held-out test window the tuned LightGBM model reaches a PR-AUC of 0.5879 (95% bootstrap interval 0.5673 to 0.6020), against a fraud rate of 3.48%, which is the PR-AUC a random ranking would score.
+This project builds a fraud detection model for e-commerce card transactions and evaluates it on the latest 15% of the data by time, a window that was not used for training, early stopping, tuning, model choice or threshold selection. On that held-out test window the tuned LightGBM model reaches a PR-AUC of 0.5879 (95% bootstrap interval 0.5673 to 0.6020), against a fraud rate of 3.48%, which is the PR-AUC a random ranking would score. The repository also includes SHAP and error analysis, a cost-based decision threshold and a Dockerised FastAPI service.
 
 ## Data
 
@@ -24,7 +24,7 @@ The raw data is not redistributed. To reproduce the results, join the Kaggle com
 
 **Metric.** The primary metric is PR-AUC (average precision). With a fraud rate of 3.50%, a model that flags nothing is correct on every legitimate transaction and so scores a high accuracy while catching no fraud, so accuracy says little. PR-AUC measures how well frauds are ranked above legitimate transactions. Recall at a precision of 0.50 and 0.80 is also reported.
 
-**Test set used once.** The test window is loaded in one place only, `src/fraud/final_eval.py`. The script refuses to run a second time unless `--force` is passed, and records the number of runs in `reports/metrics.json`. The final test evaluation was run once.
+**Test set used once.** Test labels are used for scoring in one place only, `src/fraud/final_eval.py`, which refuses to run a second time unless `--force` is passed and records the number of runs in `reports/metrics.json`. The final test evaluation was run once. The test window appears elsewhere only descriptively. The EDA statistics in `reports/eda_summary.md` cover all 590,540 rows, test labels included. The test fraud counts are reported in `reports/split_info.json`. The test features are produced by the feature builder fitted on train. The test scores were used after the final evaluation for the descriptive stability analysis. None of these influenced a model, feature or threshold decision.
 
 ## Results
 
@@ -72,6 +72,8 @@ At a fee of 5 the cost-minimising threshold on validation is 2.82e-05 (transacti
 | 5 | 2.82e-05 | 157,683.13 | 469,608.11 | 427,490.00 |
 | 10 | 6.51e-05 | 190,677.40 | 469,608.11 | 854,980.00 |
 
+At the chosen threshold with a fee of 5, the model reaches a precision of 0.1980 and a recall of 0.7814 on test, and flags 13.7% of test transactions (12,165 of 88,581).
+
 ![Validation cost against threshold on a log scale, with the cost-minimising threshold marked](reports/figures/cost_vs_threshold.png)
 
 Any saving shown here depends entirely on these assumptions. With a different loss per missed fraud or a different review cost, the threshold and the saving change. Full tables are in `reports/cost_analysis.md`.
@@ -87,6 +89,15 @@ The full findings, with sources for every number, are in `reports/findings.md`.
 ![PR-AUC and fraud rate per 7-day bucket across the validation and test windows, with split boundaries marked](reports/figures/stability.png)
 
 ![Top 20 features by mean absolute SHAP value on 5,000 validation rows](reports/figures/shap_bar.png)
+
+## Next steps
+
+The following have not been done:
+
+- **Rolling-origin evaluation** with a fresh holdout, to measure how performance varies across time windows rather than on one split.
+- **Card-history features** computed from past transactions only, such as recent transaction counts per card, so that each row sees only earlier rows.
+- **Probability calibration**, so that scores can be read as probabilities and the threshold set on that scale.
+- **Overlap between ProductCD W and missing identity data**, to test whether the two error-rate gaps in the findings are the same rows.
 
 ## Limitations
 
