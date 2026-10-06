@@ -19,5 +19,10 @@ MERGED_PARQUET: Path = INTERIM_DIR / "train_merged.parquet"
 # Chronological split on TransactionDT: train, validation, test.
 SPLIT_FRACTIONS: tuple[float, float, float] = (0.70, 0.15, 0.15)
 
-# Filled in Phase 5.
-COSTS: dict[str, float] = {}
+# Illustrative cost assumptions for threshold selection, not real business figures.
+# - A missed fraud (false negative) costs its TransactionAmt: a simplified chargeback loss.
+# - A false alarm (false positive) costs a fixed manual review fee, in the same currency units.
+# - A flagged transaction that is truly fraud is blocked at no further cost.
+# - Amounts are converted to float64 and rounded to 2 decimal places before use.
+COSTS: dict[str, float] = {"review_fee": 5.0}
+SENSITIVITY_FEES: tuple[float, ...] = (2.0, 5.0, 10.0)

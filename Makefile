@@ -2,7 +2,7 @@ PYTHON_VERSION := $(shell cat .python-version)
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup data eda split baselines features models test
+.PHONY: setup data eda split baselines features models threshold final-eval test
 
 setup:
 	python$(PYTHON_VERSION) -m venv $(VENV)
@@ -27,6 +27,12 @@ features:
 
 models:
 	PYTHONPATH=src $(PY) -m fraud.train --models
+
+threshold:
+	PYTHONPATH=src $(PY) -m fraud.threshold
+
+final-eval:
+	PYTHONPATH=src $(PY) -m fraud.final_eval
 
 test:
 	$(PY) -m pytest

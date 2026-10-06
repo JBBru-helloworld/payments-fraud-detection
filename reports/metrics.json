@@ -67,5 +67,79 @@
     "tuned_from": "lgbm_default",
     "n_trials": 40,
     "tuning_seconds": 9358.8
+  },
+  "final_test": {
+    "rows": 88581,
+    "frauds": 3083,
+    "fraud_rate": 0.03480430340592226,
+    "pr_auc": 0.5878828047065172,
+    "roc_auc": 0.908393613553371,
+    "recall_at_p50": 0.5857930587090496,
+    "recall_at_p80": 0.43074927019137205,
+    "pr_auc_ci95": {
+      "low": 0.5673091131298645,
+      "high": 0.6019612882197496,
+      "resamples": 200,
+      "seed": 42
+    },
+    "threshold": 2.817647271815681e-05,
+    "review_fee": 5.0,
+    "at_threshold": {
+      "threshold": 2.817647271815681e-05,
+      "cost": 157683.13,
+      "precision": 0.19802712700369915,
+      "recall": 0.7813817710022705,
+      "tp": 2409,
+      "fp": 9756,
+      "fn": 674
+    },
+    "flag_nothing": {
+      "threshold": Infinity,
+      "cost": 469608.11,
+      "precision": 0.0,
+      "recall": 0.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 3083
+    },
+    "flag_everything": {
+      "threshold": -Infinity,
+      "cost": 427490.0,
+      "precision": 0.03480430340592226,
+      "recall": 1.0,
+      "tp": 3083,
+      "fp": 85498,
+      "fn": 0
+    },
+    "sensitivity": [
+      {
+        "review_fee": 2.0,
+        "threshold": 8.61879655407093e-06,
+        "cost": 107071.76,
+        "precision": 0.13317290461317904,
+        "recall": 0.843658773921505,
+        "flag_nothing_cost": 469608.11,
+        "flag_everything_cost": 170996.0
+      },
+      {
+        "review_fee": 5.0,
+        "threshold": 2.817647271815681e-05,
+        "cost": 157683.13,
+        "precision": 0.19802712700369915,
+        "recall": 0.7813817710022705,
+        "flag_nothing_cost": 469608.11,
+        "flag_everything_cost": 427490.0
+      },
+      {
+        "review_fee": 10.0,
+        "threshold": 6.505720324921712e-05,
+        "cost": 190677.4,
+        "precision": 0.25843834383438347,
+        "recall": 0.7450535192993837,
+        "flag_nothing_cost": 469608.11,
+        "flag_everything_cost": 854980.0
+      }
+    ],
+    "runs": 1
   }
 }

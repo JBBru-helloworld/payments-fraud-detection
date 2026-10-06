@@ -68,6 +68,16 @@ def read_train_validation(
     return df.loc[is_train].reset_index(drop=True), df.loc[~is_train].reset_index(drop=True)
 
 
+def read_test(columns: list[str], path: Path = MERGED_PARQUET) -> pd.DataFrame:
+    """Read columns for the test window only. Call this from the final evaluation step alone."""
+    time = pd.read_parquet(path, columns=[TIME_COL])[TIME_COL]
+    _, hi = cut_points(time)
+    cols = list(dict.fromkeys([TIME_COL, *columns]))
+    df = pd.read_parquet(path, columns=cols, filters=[(TIME_COL, ">", hi)])
+    assert np.array_equal(df[TIME_COL].to_numpy(), time[time > hi].to_numpy())
+    return df.reset_index(drop=True)
+
+
 def load_split_frame(path: Path = MERGED_PARQUET) -> pd.DataFrame:
     """Load only the columns needed to build and describe the split."""
     return pd.read_parquet(path, columns=[ID_COL, TIME_COL, TARGET])
