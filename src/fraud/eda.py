@@ -3,8 +3,6 @@
 Descriptive only. No statistic computed here is used as a model input.
 """
 
-import re
-from collections.abc import Sequence
 from pathlib import Path
 
 import matplotlib
@@ -15,15 +13,13 @@ import numpy as np
 import pandas as pd
 
 from fraud.config import FIGURES_DIR, MERGED_PARQUET, REPORTS_DIR, SPLIT_FRACTIONS
-from fraud.data import ID_COL, TARGET
+from fraud.data import ID_COL, TARGET, TIME_COL, column_group, column_groups
 
-TIME_COL = "TransactionDT"
 SECONDS_PER_DAY = 86_400
 MIN_EMAIL_COUNT = 500
 TOP_EMAIL_DOMAINS = 15
 HIGH_MISSING = 0.90
 CATEGORICAL_COLS = ("ProductCD", "card4", "card6", "DeviceType")
-GROUP_ORDER = ("transaction", "C", "D", "M", "V", "identity")
 
 # Reference palette (light mode): categorical slots 1 and 2, plus chart chrome.
 LEGIT_COLOUR = "#2a78d6"
@@ -34,28 +30,6 @@ INK_SECONDARY = "#52514e"
 MUTED = "#898781"
 GRID = "#e1e0d9"
 BASELINE = "#c3c2b7"
-
-
-def column_group(col: str) -> str | None:
-    """Return the column group name, or None for ID, target and time columns."""
-    if col in (ID_COL, TARGET, TIME_COL):
-        return None
-    for prefix in ("C", "D", "M", "V"):
-        if re.fullmatch(rf"{prefix}\d+", col):
-            return prefix
-    if col.startswith("id_") or col in ("DeviceType", "DeviceInfo"):
-        return "identity"
-    return "transaction"
-
-
-def column_groups(columns: Sequence[str]) -> dict[str, list[str]]:
-    """Map each group name to its columns, in GROUP_ORDER."""
-    groups: dict[str, list[str]] = {g: [] for g in GROUP_ORDER}
-    for col in columns:
-        group = column_group(col)
-        if group is not None:
-            groups[group].append(col)
-    return groups
 
 
 def markdown_table(df: pd.DataFrame) -> str:

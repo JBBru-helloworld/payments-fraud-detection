@@ -7,9 +7,8 @@ import numpy as np
 import pandas as pd
 
 from fraud.config import MERGED_PARQUET, REPORTS_DIR, SPLIT_FRACTIONS
-from fraud.data import ID_COL, TARGET
+from fraud.data import ID_COL, TARGET, TIME_COL
 
-TIME_COL = "TransactionDT"
 SPLIT_NAMES: tuple[str, str, str] = ("train", "validation", "test")
 SPLIT_INFO_JSON: Path = REPORTS_DIR / "split_info.json"
 

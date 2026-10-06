@@ -1,5 +1,7 @@
 """Load the IEEE-CIS training CSVs, merge them, downcast numerics and save parquet."""
 
+import re
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
@@ -10,6 +12,30 @@ from fraud.config import MERGED_PARQUET, TRAIN_IDENTITY_CSV, TRAIN_TRANSACTION_C
 
 TARGET = "isFraud"
 ID_COL = "TransactionID"
+TIME_COL = "TransactionDT"
+GROUP_ORDER = ("transaction", "C", "D", "M", "V", "identity")
+
+
+def column_group(col: str) -> str | None:
+    """Return the column group name, or None for ID, target and time columns."""
+    if col in (ID_COL, TARGET, TIME_COL):
+        return None
+    for prefix in ("C", "D", "M", "V"):
+        if re.fullmatch(rf"{prefix}\d+", col):
+            return prefix
+    if col.startswith("id_") or col in ("DeviceType", "DeviceInfo"):
+        return "identity"
+    return "transaction"
+
+
+def column_groups(columns: Sequence[str]) -> dict[str, list[str]]:
+    """Map each group name to its columns, in GROUP_ORDER."""
+    groups: dict[str, list[str]] = {g: [] for g in GROUP_ORDER}
+    for col in columns:
+        group = column_group(col)
+        if group is not None:
+            groups[group].append(col)
+    return groups
 
 
 def load_raw(
