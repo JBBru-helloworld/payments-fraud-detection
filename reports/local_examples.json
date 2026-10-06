@@ -1,0 +1,46 @@
+{
+  "threshold": 2.817647271815681e-05,
+  "rule": "lower-median score within group, ties by TransactionID",
+  "caught_fraud": {
+    "TransactionID": 3451546,
+    "score": 0.3784203011523454,
+    "label": 1,
+    "group_size": 2535,
+    "base_value_log_odds": -13.526829255355086,
+    "top_contributions": {
+      "card1_amt_mean": 1.411105385755648,
+      "C13": 1.3178205807423309,
+      "V320": 0.897646038961735,
+      "hour_of_day": 0.7590841755951381,
+      "dist1": -0.653706081455059
+    }
+  },
+  "missed_fraud": {
+    "TransactionID": 3473556,
+    "score": 3.084674498733138e-06,
+    "label": 1,
+    "group_size": 507,
+    "base_value_log_odds": -13.526829255355086,
+    "top_contributions": {
+      "C13": 0.7587602202148404,
+      "P_emaildomain": -0.6061813747164517,
+      "freq_card1": 0.43712598178904644,
+      "card1_amt_mean": -0.38874146093605594,
+      "card5": -0.3705088737546896
+    }
+  },
+  "false_alarm": {
+    "TransactionID": 3417985,
+    "score": 0.00010686360529583557,
+    "label": 0,
+    "group_size": 8322,
+    "base_value_log_odds": -13.526829255355086,
+    "top_contributions": {
+      "freq_addr1": -1.1123537444763292,
+      "C13": 0.7884714384131191,
+      "card1_amt_mean": 0.769489122703286,
+      "card6": 0.665781727188647,
+      "TransactionAmt": 0.5962764385831416
+    }
+  }
+}

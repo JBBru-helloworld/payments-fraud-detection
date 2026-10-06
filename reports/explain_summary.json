@@ -1,0 +1,26 @@
+{
+  "threshold": 2.817647271815681e-05,
+  "score_scale": "raw model score, not calibrated",
+  "validation": {
+    "rows": 88581,
+    "tp": 2535,
+    "fp": 8322,
+    "fn": 507,
+    "tn": 77217,
+    "flagged": 10857,
+    "flag_rate": 0.12256578724557185,
+    "precision": 0.23348991434097818,
+    "recall": 0.8333333333333334
+  },
+  "test": {
+    "rows": 88581,
+    "tp": 2409,
+    "fp": 9756,
+    "fn": 674,
+    "tn": 75742,
+    "flagged": 12165,
+    "flag_rate": 0.13733193348460732,
+    "precision": 0.19802712700369915,
+    "recall": 0.7813817710022705
+  }
+}
